@@ -72,7 +72,6 @@ function useApiState<Fn extends (...args: any[]) => Promise<any>, T = any>(
       } else if (response.code === 401) {
         dispatch({ type: "failure", payload: { error: "UNAUTHORIZED" } });
       } else {
-        // const errors = {};
         dispatch({
           type: "failure",
           payload: { error: "Duplicated Suspect", errors: response },
@@ -89,7 +88,7 @@ function useApiState<Fn extends (...args: any[]) => Promise<any>, T = any>(
 }
 
 function useApi(requests: any) {
-  const calls = {};
+  const calls: any = {};
   const callsnames = Object.keys(requests);
   const { length } = callsnames;
 

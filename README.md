@@ -1,18 +1,8 @@
-# Baha chammakhi
+# React custom Hooks
 
 ![Twitter URL](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2Fbahachammakhi) ![GitHub followers](https://img.shields.io/github/followers/bahachammakhi?style=social)
 
 > Custom hooks 🧑‍💻
-
-## Table of contents
-
-- [Links](#Links)
-- [Technologies](#technologies)
-- [Setup](#setup)
-- [Features](#features)
-- [Folder-Structure](#Folder-Structure)
-- [Status](#status)
-- [Contact](#contact)
 
 ## Links
 
@@ -41,13 +31,60 @@ List of features ready and TODOs for future development
 
 To-do list:
 
-- useForm hook
-- useCurrentWidth
-- useLifeCycle
+- useForm hook (documentation /exemple)
+- useCurrentWidth (documentation / exemple)
+- useLifeCycle (documentation / exemple)
 
 ## Status
 
 Project is: _in progress_
+
+# Documentation
+
+## useApi
+
+```jsx
+import React, { useState, useEffect } from "react";
+import { useApi } from "@bahachammakhi/hooks";
+import axios from "axios";
+const getPeople = () => axios.get("https://swapi.dev/api/people/");
+const App = () => {
+  const { ...calls } = useApi({ getPeople });
+  const [people, setPeople] = useState < any > [];
+
+  useEffect(() => {
+    calls.getPeople.call();
+  }, []);
+  useEffect(() => {
+    setPeople(calls.getPeople.data);
+  }, [calls.getPeople.success]);
+
+  return (
+    <>
+      {people.results.map((element: any) => {
+        return <>{element.name}</>;
+      })}
+    </div>
+  );
+};
+```
+
+## useCurrentWidth
+
+```jsx
+import React from "react";
+import { useCurrentWidth } from "@bahachammakhi/hooks";
+
+const App = () => {
+  const width = useCurrentWidth();
+
+  return (
+    <div>
+      <div style={{ width: width, backgroundColor: "black" }}>Name</div>
+    </div>
+  );
+};
+```
 
 ## Contact
 

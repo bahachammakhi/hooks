@@ -1,18 +1,18 @@
-import { useReducer } from 'react';
+import { useReducer, useState, useRef, useEffect } from 'react';
 
 /*! *****************************************************************************
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-this file except in compliance with the License. You may obtain a copy of the
-License at http://www.apache.org/licenses/LICENSE-2.0
+Copyright (c) Microsoft Corporation.
 
-THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-MERCHANTABLITY OR NON-INFRINGEMENT.
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
 
-See the Apache Version 2.0 License for specific language governing permissions
-and limitations under the License.
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
 
 var __assign = function() {
@@ -27,10 +27,11 @@ var __assign = function() {
 };
 
 function __awaiter(thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 }
@@ -123,7 +124,6 @@ function useApiState(fn) {
                             dispatch({ type: "failure", payload: { error: "UNAUTHORIZED" } });
                         }
                         else {
-                            // const errors = {};
                             dispatch({
                                 type: "failure",
                                 payload: { error: "Duplicated Suspect", errors: response },
@@ -156,5 +156,147 @@ function useApi(requests) {
     return __assign({}, calls);
 }
 
-export { useApi };
+var useForm = function (_a) {
+    var handleSubmitCallback = _a.handleSubmitCallback, validateCallback = _a.validateCallback, initialValues = _a.initialValues;
+    var _b = useState(initialValues), form = _b[0], setForm = _b[1]; //for holding initial form data
+    var _c = useState({}), errors = _c[0], setErrors = _c[1]; //for validtion errors
+    var _d = useState(false), success = _d[0], setSuccess = _d[1]; //set to true if form was submitted successfully
+    var _e = useState(false), submitting = _e[0], setSubmitting = _e[1]; //set to true when first submitting the form to disable the submit button
+    //below is a function that creates a touched variable from hte initial values of a form, setting all fields to false (not touched)
+    var setInitialTouched = function (form) {
+        var touchedInitial = {};
+        //if the initial values aren't populated than return an empty object.
+        if (!form)
+            return {};
+        //create a new object using the keys of the form object setting alll values to false.
+        Object.keys(form).forEach(function (value) {
+            touchedInitial[value] = false;
+        });
+        return touchedInitial;
+    };
+    var _f = useState(setInitialTouched(form)), touched = _f[0], setTouched = _f[1];
+    var validate = function () {
+        var e = validateCallback();
+        setErrors(e);
+        return e;
+    };
+    var handleChange = function (e) {
+        var _a = e.target, name = _a.name, value = _a.value;
+        setForm(function (state) {
+            var _a;
+            return __assign(__assign({}, state), (_a = {}, _a[name] = value, _a));
+        });
+    };
+    var handleBlur = function (e) {
+        var name = e.target.name;
+        setTouched(function (c) {
+            var _a;
+            return __assign(__assign({}, c), (_a = {}, _a[name] = true, _a));
+        });
+        validate();
+    };
+    var handleSubmit = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var touchedTrue, err, _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    setSubmitting(true);
+                    touchedTrue = {};
+                    Object.keys(form).forEach(function (value) {
+                        touchedTrue[value] = true;
+                    });
+                    setTouched(touchedTrue);
+                    err = validate();
+                    if (!(Object.keys(err).length === 0)) return [3 /*break*/, 2];
+                    //if there are no errors, set submitting=false and submit form.
+                    setSubmitting(false);
+                    console.log("no errors.");
+                    _a = setSuccess;
+                    return [4 /*yield*/, handleSubmitCallback()];
+                case 1:
+                    _a.apply(void 0, [_b.sent()]);
+                    return [3 /*break*/, 3];
+                case 2:
+                    setSubmitting(false);
+                    setSuccess(false);
+                    _b.label = 3;
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
+    var handleReset = function () { return setForm(initialValues); };
+    return {
+        handleChange: handleChange,
+        handleBlur: handleBlur,
+        handleSubmit: handleSubmit,
+        setForm: setForm,
+        handleReset: handleReset,
+        form: form,
+        errors: errors,
+        touched: touched,
+        submitting: submitting,
+        success: success,
+    };
+};
+
+function useDidMount(fn) {
+    var mounted = useRef(false);
+    useEffect(function () {
+        mounted.current = true;
+        fn();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    return mounted.current;
+}
+function useDidUpdate(fn, deps) {
+    var mounted = useRef(false);
+    useEffect(function () {
+        if (!mounted.current) {
+            mounted.current = true;
+        }
+        else {
+            fn();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, deps);
+    return mounted.current;
+}
+function useWillUnmount(fn) {
+    useEffect(function () {
+        return fn();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+}
+
+var getWidth = function () {
+    return window.innerWidth ||
+        document.documentElement.clientWidth ||
+        document.body.clientWidth;
+};
+function useCurrentWitdh() {
+    // save current window width in the state object
+    var _a = useState(getWidth()), width = _a[0], setWidth = _a[1];
+    // in this case useEffect will execute only once because
+    // it does not have any dependencies.
+    useEffect(function () {
+        // timeoutId for debounce mechanism
+        var timeoutId = null;
+        var resizeListener = function () {
+            // prevent execution of previous setTimeout
+            clearTimeout(timeoutId);
+            // change width from the state object after 150 milliseconds
+            timeoutId = setTimeout(function () { return setWidth(getWidth()); }, 150);
+        };
+        // set resize listener
+        window.addEventListener("resize", resizeListener);
+        // clean up function
+        return function () {
+            // remove resize listener
+            window.removeEventListener("resize", resizeListener);
+        };
+    }, []);
+    return width;
+}
+
+export { useApi, useCurrentWitdh as useCurrentWidth, useDidMount, useDidUpdate, useForm, useWillUnmount };
 //# sourceMappingURL=index.es.js.map
