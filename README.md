@@ -18,9 +18,9 @@
 ## Setup
 
 ```bash
-$npm install @bahachammakhi/hooks
+$ npm install @bahachammakhi/hooks
 #
-$yarn add @bahachammakhi/hooks
+$ yarn add @bahachammakhi/hooks
 ```
 
 ## Features
@@ -60,7 +60,7 @@ const App = () => {
   }, [calls.getPeople.success]);
 
   return (
-    <>
+    <div>
       {people.results.map((element: any) => {
         return <>{element.name}</>;
       })}
