@@ -8,6 +8,8 @@
 
 - [PersonalWebsite](https://www.bahachammakhi.tn) My personal website
 
+- [GithubRepo](https://github.com/bahachammakhi/hooks)
+
 - [@bahachammakhi/hooks](https://www.npmjs.com/package/@bahachammakhi/hooks) NPM package for this library
 
 ## Technologies

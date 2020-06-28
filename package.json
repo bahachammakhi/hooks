@@ -1,6 +1,6 @@
 {
   "name": "@bahachammakhi/hooks",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Customized Hooks for React Projects",
   "main": "build/index.js",
   "module": "build/index.es.js",
