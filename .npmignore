@@ -2,3 +2,4 @@
 /.storybook
 /coverage
 /node_modules
+/src

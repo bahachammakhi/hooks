@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import useApi from "../src/components/useApi";
+import { useApi } from "@bahachammakhi/hooks";
 import axios from "axios";
 
 const getPeople = () => axios.get("https://swapi.dev/api/people/");

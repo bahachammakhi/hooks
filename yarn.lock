@@ -1125,6 +1125,21 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@bahachammakhi/hooks@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@bahachammakhi/hooks/-/hooks-1.0.1.tgz#508bb08e5a5a45e377649c1bc0a93596d620aa50"
+  integrity sha512-jw28CLPuTItmvicGDt2Z3nCeBs0dRgHm3zDoiOJJ3GayipTPpxe0+82ba8HHFtM8HXyy9VUm4vuMUbjm8FxfSA==
+  dependencies:
+    axios "^0.19.2"
+
+"@bahachammakhi/hooks@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@bahachammakhi/hooks/-/hooks-1.0.2.tgz#83fb7ec4f2ed0699bbfc4ff6dfdfe650c39ec007"
+  integrity sha512-cJ/h+9lF3D0dKAs9ZHb4K3btdlLeDRXdZZfMPPpJ4MhuFfziFa7zUZoqfHV6msZNAyHPxCcLMF5BuowHm4+NDQ==
+  dependencies:
+    "@bahachammakhi/hooks" "^1.0.1"
+    axios "^0.19.2"
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"

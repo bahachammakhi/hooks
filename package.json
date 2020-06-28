@@ -1,6 +1,6 @@
 {
   "name": "@bahachammakhi/hooks",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Customized Hooks for React Projects",
   "main": "build/index.js",
   "module": "build/index.es.js",
@@ -24,8 +24,16 @@
     "test": "jest --coverage",
     "storybook": "start-storybook"
   },
-  "author": "Baha eddine chammakhi",
+  "author": "@bahachammakhi",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bahachammakhi/hooks"
+  },
+  "bugs": {
+    "url": "https://github.com/bahachammakhi/hooks/issues"
+  },
+  "homepage": "https://github.com/bahachammakhi/hooks#readme",
   "devDependencies": {
     "@babel/core": "^7.10.3",
     "@storybook/react": "^5.3.19",
@@ -80,6 +88,7 @@
     ]
   },
   "dependencies": {
+    "@bahachammakhi/hooks": "^1.0.2",
     "axios": "^0.19.2"
   }
 }
